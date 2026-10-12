@@ -1,0 +1,56 @@
+{% include 'header.twig' %}
+
+<article class="post">
+
+    <header class="post__head">
+        <div class="container">
+            <nav class="post__crumbs" aria-label="breadcrumb">
+                <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+                <span>/</span>
+                <a href="{{ lang_url('yazilar') }}">{{ t('nav_news') }}</a>
+            </nav>
+            <time class="post__date" datetime="{{ page["page_date"]|date('Y-m-d') }}">
+                {{ page["page_date"]|date('d.m.Y') }}
+            </time>
+            <h1 class="post__title">{{ page["page_name"] }}</h1>
+            {% if page["page_description"] %}
+                <p class="post__lead">{{ page["page_description"] }}</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="post__body">
+        <div class="container">
+            <div class="post__content">
+                {{ page["page_content"]|raw }}
+            </div>
+
+            <div class="post__back">
+                <a class="btn-brand-outline" href="{{ lang_url('yazilar') }}">&larr; {{ t('news_all') }}</a>
+            </div>
+        </div>
+    </div>
+
+</article>
+
+{% if otherNews %}
+<section class="post-more section-pad section-light">
+    <div class="container">
+        <h2 class="sec-more__title">{{ t('news_other') }}</h2>
+        <div class="news-grid">
+            {% for row in otherNews %}
+            <a class="news-tile slide-in" href="{{ lang_url('yazilar/' ~ row["page_get"]) }}">
+                <span class="news-tile__date">{{ row["page_date"]|date('d.m.Y') }}</span>
+                <span class="news-tile__title">{{ row["page_name"] }}</span>
+                {% if row["page_description"] %}
+                    <p class="news-tile__desc">{{ row["page_description"] }}</p>
+                {% endif %}
+                <span class="news-tile__go">{{ t('cta_find_out_more') }} &rarr;</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include 'footer.twig' %}

@@ -1,0 +1,14 @@
+{
+    "name": "mrclevha/website",
+    "description": "MRC Levha kurumsal web sitesi",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "twig/twig": "^3.8",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

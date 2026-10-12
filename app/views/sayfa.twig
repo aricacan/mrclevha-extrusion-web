@@ -1,0 +1,72 @@
+{% include 'header.twig' %}
+
+<!-- ========================================================= SAYFA BAŞLIĞI -->
+<section class="page-head page-head--media">
+    <img class="page-head__media" src="assets/cloud/pages/facility-aerial.webp?v={{ site['asset_version'] }}" alt="Cappafe üretim tesisi" loading="eager">
+    <div class="container">
+        <nav class="page-head__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('nav_corporate') }}</span>
+        </nav>
+        <h1 class="page-head__title">{{ t('nav_corporate') }}</h1>
+        <p class="page-head__intro">{{ t('corporate_intro') }}</p>
+    </div>
+</section>
+
+<!-- ============================================================== İÇERİK -->
+<section class="corp">
+    <div class="container">
+        <div class="corp__grid">
+
+            <!-- Yapışkan yan menü -->
+            <aside class="corp__side">
+                <nav class="corp__nav" id="corpNav" aria-label="{{ t('nav_corporate') }}">
+                    {% for row in corporatePages %}
+                        <a href="{{ lang_url('sayfa/' ~ row["page_get"]) }}"
+                           data-target="bolum-{{ row["page_get"] }}"
+                           class="corp__nav-link{{ row["page_get"] == activeSlug ? ' is-active' : '' }}">
+                            <span class="corp__nav-num">{{ '%02d'|format(loop.index) }}</span>
+                            <span class="corp__nav-text">{{ row["page_name"] }}</span>
+                        </a>
+                    {% endfor %}
+                </nav>
+            </aside>
+
+            <!-- Bölümler -->
+            <div class="corp__main">
+                {% for row in corporatePages %}
+                <article class="corp__block reveal" id="bolum-{{ row["page_get"] }}">
+
+                    <span class="corp__block-num">{{ '%02d'|format(loop.index) }}</span>
+
+                    <h2 class="corp__block-title typewriter" data-text="{{ row["page_name"] }}">
+                        {{ row["page_name"] }}
+                    </h2>
+
+                    {% if row["page_description"] %}
+                        <p class="corp__block-lead">{{ row["page_description"] }}</p>
+                    {% endif %}
+
+                    <div class="corp__block-body">
+                        {{ row["page_content"]|raw }}
+                    </div>
+
+                </article>
+                {% endfor %}
+
+                <!-- Bölüm sonu CTA -->
+                <div class="corp__cta reveal">
+                    <div>
+                        <h3>{{ t('corporate_cta_title') }}</h3>
+                        <p>{{ t('corporate_cta_desc') }}</p>
+                    </div>
+                    <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_contact') }}</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% include 'footer.twig' %}

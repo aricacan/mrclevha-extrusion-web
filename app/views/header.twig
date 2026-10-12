@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="{{ current_language() }}">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <base href="{{ site['url'] }}/">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {# Tarayıcı sekmesinde marka adı her zaman görünsün #}
+      <title>{{ (title and title != site['site_name']) ? title ~ ' | ' : '' }}{{ site['site_name'] }}</title>
+      <meta name="keywords" content="{{ keywords }}">
+      <meta name="description" content="{{ description }}">
+      <meta name="robots" content="{{ site['indexable'] ? 'index,follow' : 'noindex,nofollow' }}">
+      <link rel="canonical" href="{{ current_url }}">
+      <meta property="og:type" content="website">
+      <meta property="og:locale" content="{{ current_language() == 'tr' ? 'tr_TR' : 'en_US' }}">
+      <meta property="og:site_name" content="{{ site['site_name'] }}">
+      <meta property="og:title" content="{{ (title and title != site['site_name']) ? title ~ ' | ' : '' }}{{ site['site_name'] }}">
+      <meta property="og:description" content="{{ description }}">
+      <meta property="og:url" content="{{ current_url }}">
+      <meta property="og:image" content="{{ site['url'] }}/assets/cloud/pages/facility-aerial.webp">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="{{ (title and title != site['site_name']) ? title ~ ' | ' : '' }}{{ site['site_name'] }}">
+      <meta name="twitter:description" content="{{ description }}">
+      <meta name="twitter:image" content="{{ site['url'] }}/assets/cloud/pages/facility-aerial.webp">
+      <script type="application/ld+json">{{ site['schema']|json_encode|raw }}</script>
+      <link rel="icon" href="assets_new/images/favicon.ico" sizes="any">
+      <link rel="icon" type="image/png" sizes="32x32" href="assets_new/images/favicon-32.png?v={{ site['asset_version'] }}">
+      <link rel="icon" type="image/png" sizes="16x16" href="assets_new/images/favicon-16.png?v={{ site['asset_version'] }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="assets_new/images/apple-touch-icon.png?v={{ site['asset_version'] }}">
+
+    {% for language in available_languages() %}
+      <link rel="alternate" hreflang="{{ language }}" href="{{ lang_switch_url(language) }}">
+    {% endfor %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+    <link href="assets_new/css/flaticon.css" rel="stylesheet">
+    <link href="assets_new/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets_new/css/animate.css" rel="stylesheet">
+    <link href="assets_new/css/owl.carousel.css" rel="stylesheet">
+    <link href="assets_new/css/owl.theme.css" rel="stylesheet">
+    <link href="assets_new/css/slick.css" rel="stylesheet">
+    <link href="assets_new/css/slick-theme.css" rel="stylesheet">
+    <link href="assets_new/css/swiper.min.css" rel="stylesheet">
+    <link href="assets_new/css/owl.transitions.css" rel="stylesheet">
+    <link href="assets_new/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets_new/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="assets_new/css/component.css" rel="stylesheet">
+    <link href="assets_new/css/style.css" rel="stylesheet">
+    <link href="assets_new/css/responsive.css" rel="stylesheet">
+    <link href="assets_new/css/brand.css?v={{ site['asset_version'] }}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <header class="brand-header" id="brandHeader">
+            <div class="container">
+                <div class="brand-header__row">
+
+                    <a class="brand-header__logo" href="{{ lang_url() }}">
+                        <img src="{{ site['logo'] }}" alt="{{ site['site_name'] }}">
+                    </a>
+
+                    <div class="brand-header__right">
+
+                        <!-- Ana menü -->
+                        <ul class="brand-nav" id="brandNav">
+
+                            <li>
+                                <a class="{% if active_menu == "home" %}active{% endif %}" href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+                            </li>
+
+                            <li class="has-mega">
+                                <a href="{{ lang_url('sayfa') }}" class="{% if active_menu == "sayfa" %}active{% endif %}">{{ t('nav_corporate') }}</a>
+                                <div class="brand-mega">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-6 brand-mega__intro">
+                                                <span class="brand-mega__title">{{ t('nav_corporate') }}</span>
+                                                <p>{{ t('mega_corporate_desc') }}</p>
+                                                <a class="btn-arrow" href="{{ lang_url('iletisim') }}">{{ t('cta_contact') }}</a>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6">
+                                                <span class="brand-mega__heading">{{ t('mega_pages') }}</span>
+                                                <ul class="brand-mega__list">
+                                                    {% for page in pageList %}
+                                                        <li><a href="{{ lang_url('sayfa/' ~ page["page_get"]) }}">{{ page["page_name"] }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6">
+                                                <span class="brand-mega__heading">{{ t('mega_resources') }}</span>
+                                                <ul class="brand-mega__list">
+                                                    {% if galleryCount > 0 %}<li><a href="{{ lang_url('gorseller') }}">{{ t('nav_production') }}</a></li>{% endif %}
+                                                    {% if catalogCount > 0 %}<li><a href="{{ lang_url('kataloglar') }}">{{ t('nav_catalogs') }}</a></li>{% endif %}
+                                                    {% if blogList %}<li><a href="{{ lang_url('yazilar') }}">{{ t('nav_news') }}</a></li>{% endif %}
+                                                    <li><a href="{{ lang_url('iletisim') }}">{{ t('nav_contact') }}</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6 brand-mega__spotlight">
+                                                <span class="brand-mega__heading">{{ t('mega_quote_title') }}</span>
+                                                <p>{{ t('mega_quote_desc') }}</p>
+                                                <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="has-mega">
+                                <a href="{{ lang_url('hizmetler') }}" class="{% if active_menu == "hizmetler" %}active{% endif %}">{{ t('nav_sectors') }}</a>
+                                <div class="brand-mega">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-6 brand-mega__intro">
+                                                <span class="brand-mega__title">{{ t('nav_sectors') }}</span>
+                                                <p>{{ t('mega_sectors_desc') }}</p>
+                                                {% if catalogCount > 0 %}
+                                                    <a class="btn-arrow" href="{{ lang_url('kataloglar') }}">{{ t('nav_catalogs') }}</a>
+                                                {% else %}
+                                                    <a class="btn-arrow" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+                                                {% endif %}
+                                            </div>
+
+                                            {% set half = (serviceList|length / 2)|round(0, 'ceil') %}
+                                            <div class="col-lg-3 col-md-6">
+                                                <span class="brand-mega__heading">{{ t('mega_sectors') }}</span>
+                                                <ul class="brand-mega__list">
+                                                    {% for service in serviceList|slice(0, half) %}
+                                                        <li><a href="{{ lang_url('hizmetler/' ~ service["page_get"]) }}">{{ service["page_name"] }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6">
+                                                <span class="brand-mega__heading">&nbsp;</span>
+                                                <ul class="brand-mega__list">
+                                                    {% for service in serviceList|slice(half) %}
+                                                        <li><a href="{{ lang_url('hizmetler/' ~ service["page_get"]) }}">{{ service["page_name"] }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6 brand-mega__spotlight">
+                                                <span class="brand-mega__heading">{{ t('mega_quote_title') }}</span>
+                                                <p>{{ t('mega_quote_desc') }}</p>
+                                                <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            {# İçerik girilmemiş sayfalar menüde görünmez #}
+                            {% if galleryCount > 0 %}
+                            <li>
+                                <a class="{% if active_menu == "gorseller" %}active{% endif %}" href="{{ lang_url('gorseller') }}">{{ t('nav_production') }}</a>
+                            </li>
+                            {% endif %}
+
+                            {% if catalogCount > 0 %}
+                            <li>
+                                <a class="{% if active_menu == "kataloglar" %}active{% endif %}" href="{{ lang_url('kataloglar') }}">{{ t('nav_catalogs') }}</a>
+                            </li>
+                            {% endif %}
+
+                            {% if blogList %}
+                            <li>
+                                <a class="{% if active_menu == "yazilar" %}active{% endif %}" href="{{ lang_url('yazilar') }}">{{ t('nav_news') }}</a>
+                            </li>
+                            {% endif %}
+
+                            <li>
+                                <a class="{% if active_menu == "iletisim" %}active{% endif %}" href="{{ lang_url('iletisim') }}">{{ t('nav_contact') }}</a>
+                            </li>
+
+                            <li class="brand-nav__lang">
+                                <span class="brand-lang">
+                                    {% for language in available_languages() %}
+                                        <a href="{{ lang_switch_url(language) }}"
+                                           class="{% if current_language() == language %}is-active{% endif %}">{{ language|upper }}</a>
+                                        {% if not loop.last %}<span>/</span>{% endif %}
+                                    {% endfor %}
+                                </span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <button class="brand-header__toggle" id="brandNavToggle" type="button"
+                            aria-label="{{ t('nav_menu') }}" aria-expanded="false" aria-controls="brandNav" data-keep>
+                        <i class="ti-menu"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            {# Sayfa kaydırma ilerlemesi — navbar'ın alt kenarında #}
+            <div class="brand-header__progress" id="scrollProgress" aria-hidden="true"></div>
+        </header>
+
+        <main id="main">

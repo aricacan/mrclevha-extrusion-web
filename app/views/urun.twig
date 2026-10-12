@@ -1,0 +1,38 @@
+{% include 'header.twig' %}
+
+<section class="sec-hero{{ product["product_image"] ? '' : ' sec-hero--empty' }}">
+    {% if product["product_image"] %}
+        <img class="sec-hero__bg" src="{{ product["product_image"] }}?v={{ site['asset_version'] }}" alt="{{ product["product_name"] }} ürün görseli">
+    {% endif %}
+    <div class="container">
+        <nav class="sec-hero__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('home_solutions') }}</span>
+        </nav>
+        <h1 class="sec-hero__title">{{ product["product_name"] }}</h1>
+    </div>
+</section>
+
+<section class="sec-body">
+    <div class="container">
+        <div class="sec-body__grid">
+
+            <div class="sec-body__lead slide-in slide-in--left">
+                {% if product["product_desc"] %}
+                    <p class="sec-lead">{{ product["product_desc"] }}</p>
+                {% endif %}
+                <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+            </div>
+
+            <div class="sec-body__text slide-in slide-in--right">
+                {% if product["product_content"] %}
+                    {{ product["product_content"]|raw }}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% include 'footer.twig' %}

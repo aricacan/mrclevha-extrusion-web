@@ -1,0 +1,59 @@
+{% include 'header.twig' %}
+
+<!-- Tam genişlik görsel başlık -->
+<section class="sec-hero{{ category["category_image"] ? '' : ' sec-hero--empty' }}">
+    {% if category["category_image"] %}
+        <img class="sec-hero__bg" src="{{ category["category_image"] }}?v={{ site['asset_version'] }}" alt="{{ category["category_name"] }} ürün grubu görseli">
+    {% endif %}
+    <div class="container">
+        <nav class="sec-hero__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('home_solutions') }}</span>
+        </nav>
+        <span class="sec-hero__kicker">{{ t('home_solutions') }}</span>
+        <h1 class="sec-hero__title">{{ category["category_name"] }}</h1>
+    </div>
+</section>
+
+<section class="sec-body">
+    <div class="container">
+        <div class="sec-body__grid">
+
+            <div class="sec-body__lead slide-in slide-in--left">
+                {% if category["category_desc"] %}
+                    <p class="sec-lead">{{ category["category_desc"] }}</p>
+                {% endif %}
+                <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+            </div>
+
+            <div class="sec-body__text slide-in slide-in--right">
+
+                {% if productList %}
+                    <div class="row g-4">
+                        {% for product in productList %}
+                        <div class="col-md-6">
+                            <a class="news-tile" href="{{ lang_url('urun/' ~ product["product_url"]) }}">
+                                <span class="news-tile__title">{{ product["product_name"] }}</span>
+                                {% if product["product_desc"] %}
+                                    <p class="news-tile__desc">{{ product["product_desc"] }}</p>
+                                {% endif %}
+                                <span class="news-tile__go">{{ t('cta_details') }} &rarr;</span>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-note">
+                        <p>{{ t('category_empty') }}</p>
+                        <a class="btn-arrow" href="{{ lang_url('iletisim') }}">{{ t('cta_contact') }}</a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% include 'footer.twig' %}

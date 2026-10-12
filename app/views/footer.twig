@@ -1,0 +1,191 @@
+        </main>
+
+        <footer class="brand-footer">
+
+            <div class="brand-footer__top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-12 mb-5 mb-lg-0">
+                            {# Site logosunda alfa kanalı yok; koyu zemin için beyaz sürüm kullanılıyor #}
+                            <img class="brand-footer__logo" src="assets_new/images/logo-white.png?v={{ site['asset_version'] }}" alt="{{ site['site_name'] }}">
+                            <p class="brand-footer__tagline">{{ t('footer_tagline') }}</p>
+
+                            <ul class="brand-footer__social">
+                                {% if settings["linkedin"] %}<li><a href="{{ settings["linkedin"] }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ti-linkedin"></i></a></li>{% endif %}
+                                {% if settings["instagram"] %}<li><a href="{{ settings["instagram"] }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="ti-instagram"></i></a></li>{% endif %}
+                                {% if settings["facebook"] %}<li><a href="{{ settings["facebook"] }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="ti-facebook"></i></a></li>{% endif %}
+                                {% if settings["twitter"] %}<li><a href="{{ settings["twitter"] }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="ti-twitter-alt"></i></a></li>{% endif %}
+                                {% if settings["tiktok"] %}<li><a href="{{ settings["tiktok"] }}" target="_blank" rel="noopener" aria-label="TikTok"><i class="ti-music-alt"></i></a></li>{% endif %}
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4 col-6 mb-4 mb-lg-0">
+                            <h3 class="brand-footer__title">{{ t('footer_links') }}</h3>
+                            <ul class="brand-footer__list">
+                                <li><a href="{{ lang_url() }}">{{ t('nav_home') }}</a></li>
+                                {% for page in pageList %}
+                                    <li><a href="{{ lang_url('sayfa/' ~ page["page_get"]) }}">{{ page["page_name"] }}</a></li>
+                                {% endfor %}
+                                {% if catalogCount > 0 %}<li><a href="{{ lang_url('kataloglar') }}">{{ t('nav_catalogs') }}</a></li>{% endif %}
+                                <li><a href="{{ lang_url('gizlilik') }}">Gizlilik Politikası</a></li>
+                                <li><a href="{{ lang_url('kvkk') }}">KVKK Aydınlatma Metni</a></li>
+                                <li><a href="{{ lang_url('kullanim-sartlari') }}">Kullanım Şartları</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-3 col-md-4 col-6 mb-4 mb-lg-0">
+                            <h3 class="brand-footer__title">{{ t('footer_sectors') }}</h3>
+                            <ul class="brand-footer__list">
+                                {% for service in serviceList %}
+                                    <li><a href="{{ lang_url('hizmetler/' ~ service["page_get"]) }}">{{ service["page_name"] }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-3 col-md-4">
+                            <h3 class="brand-footer__title">{{ t('footer_contact') }}</h3>
+                            <ul class="brand-footer__list">
+                                {% if settings["site_address"] %}<li><span>{{ settings["site_address"] }}</span></li>{% endif %}
+                                {% if settings["site_telephone"] %}<li><a href="tel:{{ settings["site_telephone"]|replace({' ': '', '(': '', ')': '', '-': ''}) }}">{{ settings["site_telephone"] }}</a></li>{% endif %}
+                                {% if settings["site_mail"] %}<li><a href="mailto:{{ settings["site_mail"] }}">{{ settings["site_mail"] }}</a></li>{% endif %}
+                            </ul>
+                            <a class="btn-brand-red mt-2" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-footer__bottom">
+                <div class="container">
+                    <span>&copy; {{ "now"|date("Y") }} {{ settings["site_title"] }}. {{ t('footer_rights') }}</span>
+                    <span>{{ settings["site_address"] }}</span>
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <!-- end of page-wrapper -->
+
+    <!-- ===================================================== TEKLİF AL -->
+    <div class="quote" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteTitle" hidden>
+        <div class="quote__backdrop" data-quote-close></div>
+
+        <div class="quote__box">
+            <button class="quote__close" type="button" aria-label="{{ t('quote_close') }}" data-quote-close>&times;</button>
+            <h2 class="quote__title" id="quoteTitle">{{ t('quote_title') }}</h2>
+
+            {% if app_query.teklif == 'ok' %}
+                <div class="form-note form-note--ok">{{ t('quote_ok') }}</div>
+            {% elseif app_query.teklif == 'bos' %}
+                <div class="form-note form-note--err">{{ t('form_err_empty') }}</div>
+            {% elseif app_query.teklif == 'mail' %}
+                <div class="form-note form-note--err">{{ t('form_err_email') }}</div>
+            {% elseif app_query.teklif == 'hata' %}
+                <div class="form-note form-note--err">{{ t('form_err_save') }}</div>
+            {% endif %}
+
+            <form class="quote__form" method="post" action="{{ lang_url('teklif') }}">
+                <input type="hidden" name="donus" value="{{ current_url }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="quote__field">
+                    <label for="qName">{{ t('form_name') }}</label>
+                    <input id="qName" type="text" name="name" autocomplete="name" required>
+                </div>
+
+                <div class="quote__field">
+                    <label for="qPhone">{{ t('form_phone') }}</label>
+                    <input id="qPhone" type="tel" name="telephone" autocomplete="tel" required>
+                </div>
+
+                <div class="quote__field">
+                    <label for="qMail">{{ t('form_email') }}</label>
+                    <input id="qMail" type="email" name="email" autocomplete="email" required>
+                </div>
+
+                <div class="quote__field">
+                    <label for="qService">{{ t('quote_service') }}</label>
+                    <select id="qService" name="service">
+                        {% for service in serviceList %}
+                            <option value="{{ service["page_name"] }}">{{ service["page_name"] }}</option>
+                        {% endfor %}
+                        <option value="{{ t('quote_other') }}">{{ t('quote_other') }}</option>
+                    </select>
+                </div>
+
+                <button class="btn-brand-red quote__submit" type="submit">{{ t('quote_title') }}</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Başa dön (sol) -->
+    <button class="to-top" id="toTop" type="button" aria-label="{{ t('to_top') }}">&#8593;</button>
+
+    <!-- Asistan (sağ) -->
+    <button class="assistant__toggle" id="assistantToggle" type="button"
+            aria-label="WhatsApp iletişim menüsünü aç" aria-expanded="false" aria-controls="assistantPanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7a11.8 11.8 0 0 0 5.4 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.5-8.3Zm-8.4 18.1h-.1c-1.7 0-3.4-.5-4.8-1.3l-.3-.2-3.9 1 1-3.8-.2-.3a9.8 9.8 0 0 1-1.5-5.2C2.3 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c0 5.4-4.4 9.8-9.8 9.8Zm5.4-7.3c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.5.8-1.7.1-.2 0-.4-.1-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4Z"/></svg>
+    </button>
+
+    <div class="assistant__panel" id="assistantPanel" data-auto-reply="{{ t('assistant_auto_reply') }}">
+        <div class="assistant__head">
+            <span class="assistant__avatar">&#9881;</span>
+            <span>
+                <span class="assistant__name">{{ t('assistant_name') }}</span>
+                <span class="assistant__status">{{ t('assistant_online') }}</span>
+            </span>
+        </div>
+        <div class="assistant__body" id="assistantBody">
+            <p class="assistant__msg">{{ t('assistant_greeting') }}</p>
+            <div class="assistant__options">
+                <button type="button" data-quote-open>{{ t('assistant_opt_quote') }}</button>
+                <a href="{{ lang_url('hizmetler') }}">{{ t('assistant_opt_products') }}</a>
+                {% if catalogCount > 0 %}
+                    <a href="{{ lang_url('kataloglar') }}">{{ t('assistant_opt_catalog') }}</a>
+                {% endif %}
+                <a href="{{ lang_url('iletisim') }}">{{ t('assistant_opt_contact') }}</a>
+
+                {% if whatsapp_number %}
+                <a class="assistant__wa" href="{{ whatsapp_link }}" target="_blank" rel="noopener">
+                    <i class="ti-comment"></i> {{ t('assistant_opt_whatsapp') }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if whatsapp_number %}
+        {# Yazılan mesaj WhatsApp'a aktarılır — sunucuda sohbet altyapısı yok #}
+        <form class="assistant__compose" id="waForm" data-wa="{{ whatsapp_number }}">
+            <input type="text" id="waText" placeholder="{{ t('assistant_input') }}" autocomplete="off">
+            <button type="submit" aria-label="{{ t('assistant_send') }}">&#10148;</button>
+        </form>
+        {% else %}
+        <form class="assistant__compose" action="{{ lang_url('iletisim') }}" method="get">
+            <input type="text" name="mesaj" placeholder="{{ t('assistant_input') }}" autocomplete="off">
+            <button type="submit" aria-label="{{ t('assistant_send') }}">&#10148;</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <aside class="cookie-consent" id="cookieConsent" role="dialog" aria-live="polite" aria-label="Çerez bildirimi" hidden>
+        <div>
+            <strong>Çerez kullanımı</strong>
+            <p>Bu site, oturum ve güvenlik gibi zorunlu çerezleri kullanır. Tercihinizi istediğiniz zaman değiştirebilirsiniz.</p>
+        </div>
+        <div class="cookie-consent__actions">
+            <a href="{{ lang_url('gizlilik') }}">Detaylar</a>
+            <button type="button" class="btn-cookie" data-cookie-reject>Reddet</button>
+            <button type="button" class="btn-brand-red btn-cookie" data-cookie-accept>Kabul Et</button>
+        </div>
+    </aside>
+
+    <script src="assets_new/js/jquery.min.js"></script>
+    <script src="assets_new/js/bootstrap.bundle.min.js"></script>
+    <script src="assets_new/js/modernizr.custom.js"></script>
+    <script src="assets_new/js/jquery-plugin-collection.js"></script>
+    <script src="assets_new/js/script.js"></script>
+    <script src="assets_new/js/brand.js?v={{ site['asset_version'] }}"></script>
+</body>
+</html>

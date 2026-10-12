@@ -1,0 +1,573 @@
+{% include 'header.twig' %}
+
+<!-- ============================================================ HERO -->
+<section class="hero hero--v">
+    <div id="heroCarousel" class="carousel slide carousel-fade">
+
+        <div class="carousel-inner">
+            {% for slider in sliderList %}
+            <div class="carousel-item{{ loop.first ? ' active' : '' }}">
+                <div class="hero__media{{ slider["slider_bg"] ? '' : ' hero__media--empty' }}">
+                    {% if loop.index == 1 %}
+                        <video src="assets/cloud/videos/hero-bg.mp4" autoplay loop muted playsinline poster="{{ slider["slider_bg"] }}" class="hero__media-video"></video>
+                    {% elseif loop.index == 3 %}
+                        <video src="assets/cloud/videos/extrusion-warehouse.mp4" autoplay loop muted playsinline poster="{{ slider["slider_bg"] }}" class="hero__media-video"></video>
+                    {% elseif loop.index == 4 %}
+                        <video src="assets/cloud/videos/coextrusion.mp4" autoplay loop muted playsinline poster="{{ slider["slider_bg"] }}" class="hero__media-video"></video>
+                    {% elseif slider["slider_bg"] %}
+                        <img src="{{ slider["slider_bg"] }}?v={{ site['asset_version'] }}" alt="{{ slider["slider_name"] }}" {{ loop.first ? 'fetchpriority="high"' : '' }}>
+                    {% endif %}
+                </div>
+                <div class="hero__caption">
+                    <div class="container">
+                        {# Dikey sayı sütununun kapladığı yer #}
+                        <div class="hero__spacer" aria-hidden="true"></div>
+                        <div class="hero__box">
+                            <span class="hero__label">{{ site['site_name'] }}</span>
+                            <h1 class="hero__title">{{ slider["slider_name"] }}</h1>
+                            {% if slider["slider_content"] %}
+                                <p class="hero__text">{{ slider["slider_content"] }}</p>
+                            {% endif %}
+                            {% if slider["slider_button"] %}
+                                <a class="btn-arrow" href="{{ lang_url(slider["slider_url"]) }}">{{ slider["slider_button"] }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if sliderList|length > 1 %}
+        <div class="hero__indicators--v">
+            <div class="container">
+                <div class="hero__nums" id="heroNums">
+                    {% for slider in sliderList %}
+                        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ loop.index0 }}"
+                                class="{{ loop.first ? 'active' : '' }}"
+                                aria-label="{{ loop.index }}">{{ '%02d'|format(loop.index) }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="hero__search">
+            <div class="container">
+                <form action="{{ lang_url('arama') }}" method="get" role="search">
+                    <button type="submit" aria-label="{{ t('search_button') }}"><i class="ti-search"></i></button>
+                    <input type="search" name="q" placeholder="{{ t('search_placeholder') }}">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==================================================== ÇÖZÜMLERİMİZ -->
+{% if categoryList %}
+<section class="section-pad">
+    <div class="container">
+        <h2 class="section-title">{{ t('home_solutions') }}</h2>
+        <p class="section-intro">{{ t('home_solutions_desc') }}</p>
+
+        <div class="row g-4">
+            {% for category in categoryList %}
+            <div class="col-lg-4 col-md-6">
+                <a class="solution-card" href="{{ lang_url('kategori/' ~ category["category_url"]) }}">
+
+                    <div class="solution-card__media{{ category["category_image"] ? '' : ' solution-card__media--empty' }}">
+                        {% if category["category_image"] %}
+                            <img src="{{ category["category_image"] }}?v={{ site['asset_version'] }}" alt="{{ category["category_name"] }}" loading="lazy">
+                        {% endif %}
+                    </div>
+
+                    <div class="solution-card__top">
+                        <h3 class="solution-card__name">{{ category["category_name"] }}</h3>
+                        {# Site logosunda alfa yok; koyu zemin için beyaz sürüm #}
+                        <img class="solution-card__mark" src="assets_new/images/logo-white.png?v={{ site['asset_version'] }}" alt="">
+                    </div>
+
+                    <div class="solution-card__bottom">
+                        {% if category["category_desc"] %}
+                            <p>{{ category["category_desc"] }}</p>
+                        {% endif %}
+                        <span class="btn-arrow">{{ t('cta_view_products') }}</span>
+                    </div>
+
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ========================================================= NEDEN BİZ -->
+<section class="section-pad section-why" style="background: var(--c-bg-alt); overflow: hidden;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 col-md-12">
+                <div class="why__media">
+                    <img src="assets/cloud/pages/about-vertical.webp" alt="Cappafe Üretim Hattı" class="img-fluid rounded shadow-lg" style="max-height: 580px; width: 100%; object-fit: cover;">
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-12">
+                <div class="why__content">
+                    <span class="why__label">{{ t('why_subtitle') }}</span>
+                    <h2 class="why__title">{{ t('why_title') }}</h2>
+                    <div class="why__desc">
+                        <p class="why__typewriter" id="whyTypewriter" data-text-tr="25 yılı aşkın süredir Bursa'daki ileri teknoloji ko-ekstrüzyon hatlarımızda ABS, PMMA, PE ve ABS/PMMA plastik levhalar üretiyoruz. Otomotivden medikale, beyaz eşyadan reklama kadar birçok sektöre küresel standartlarda, yüksek dayanımlı ve şekillendirilebilir yüzey çözümleri sunuyoruz. Çevreye duyarlı ham maddeler ve sıfır hata kalite politikamızla üretimin her aşamasında yanınızdayız." data-text-en="For over 25 years, we have been producing ABS, PMMA, PE, and ABS/PMMA plastic sheets in our high-tech co-extrusion lines in Bursa. We offer high-durability and formable surface solutions at global standards to many sectors from automotive to medical, white goods to advertising. We are beside you at every stage of production with our eco-friendly raw materials and zero-defect quality policy."></p>
+                    </div>
+                    <div class="why__buttons mt-4">
+                        <a href="{{ lang_url('sayfa/hakkimizda') }}" class="btn-brand-red">{{ t('cta_find_out_more') }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= RAKAMLARLA -->
+<section class="section-pad section-light">
+    <div class="container">
+        <h2 class="section-title">{{ t('home_stats') }}</h2>
+        <p class="section-intro">{{ t('home_stats_desc') }}</p>
+
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 stat-col">
+                <div class="stat">
+                    <div class="stat__icon">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="32" cy="32" r="22"/>
+                            <ellipse cx="32" cy="32" rx="10" ry="22"/>
+                            <path d="M11 25h42M11 39h42"/>
+                        </svg>
+                    </div>
+                    <span class="stat__num">{{ t('stat_1_num') }}</span>
+                    <span class="stat__label">{{ t('stat_1_label') }}</span>
+                    <p>{{ t('stat_1_desc') }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 stat-col">
+                <div class="stat">
+                    <div class="stat__icon">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M8 46V26l14-9 14 9v20"/>
+                            <path d="M36 46V20l12-8 10 7v27"/>
+                            <path d="M4 46h56"/>
+                            <path d="M17 34h10M17 40h10M44 30h8M44 37h8"/>
+                        </svg>
+                    </div>
+                    <span class="stat__num">{{ t('stat_2_num') }}</span>
+                    <span class="stat__label">{{ t('stat_2_label') }}</span>
+                    <p>{{ t('stat_2_desc') }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 stat-col">
+                <div class="stat">
+                    <div class="stat__icon">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M6 38V22h30v16"/>
+                            <path d="M36 26h11l9 9v3H36z"/>
+                            <circle cx="18" cy="43" r="5"/>
+                            <circle cx="45" cy="43" r="5"/>
+                            <path d="M2 27h8M2 33h6"/>
+                        </svg>
+                    </div>
+                    <span class="stat__num">{{ t('stat_3_num') }}</span>
+                    <span class="stat__label">{{ t('stat_3_label') }}</span>
+                    <p>{{ t('stat_3_desc') }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 stat-col">
+                <div class="stat">
+                    <div class="stat__icon">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M10 44V30l22-12 22 12v14"/>
+                            <path d="M10 44h44"/>
+                            <path d="M22 44V34h20v10"/>
+                            <circle cx="32" cy="24" r="3"/>
+                        </svg>
+                    </div>
+                    <span class="stat__num">{{ t('stat_4_num') }}</span>
+                    <span class="stat__label">{{ t('stat_4_label') }}</span>
+                    <p>{{ t('stat_4_desc') }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= ÖNE ÇIKAN -->
+<section class="section-light" style="padding-bottom:60px;">
+    <div class="container">
+        <div class="spotlight-band">
+            <div class="spotlight-band__media">
+                <img src="assets/cloud/pages/spotlight.webp" alt="{{ t('home_spotlight_title') }}" loading="lazy">
+            </div>
+            <div class="spotlight-band__body">
+                <h2>{{ t('home_spotlight_title') }}</h2>
+                <p>{{ t('home_spotlight_desc') }}</p>
+                <a class="btn-brand-red" href="{{ lang_url('gorseller') }}">{{ t('nav_production') }}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================== SEKTÖRLER -->
+{% if serviceList %}
+<section class="section-pad section-dark">
+    <div class="container">
+        <h2 class="section-title">{{ t('home_sectors') }}</h2>
+        <p class="section-intro">{{ t('home_sectors_desc') }}</p>
+
+        <div class="row g-4">
+            {% for service in serviceList %}
+            <div class="col-lg-3 col-md-6">
+                <a class="sector-card" href="{{ lang_url('hizmetler/' ~ service["page_get"]) }}">
+                    <div class="sector-card__bar">
+                        <span class="sector-card__label">{{ site['site_name'] }}</span>
+                    </div>
+                    <div class="sector-card__media{{ service["page_image"] ? '' : ' sector-card__media--empty' }}">
+                        {% if service["page_image"] %}
+                            <img src="{{ service["page_image"] }}?v={{ site['asset_version'] }}" alt="{{ service["page_name"] }}" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <span class="sector-card__title">{{ service["page_name"] }}</span>
+                    {% if service["page_description"] %}
+                        <p>{{ service["page_description"] }}</p>
+                    {% endif %}
+                    <span class="btn-arrow">{{ t('cta_find_out_more') }}</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ======================================================= REFERANSLAR -->
+{% if referenceList %}
+<section class="section-pad">
+    <div class="container">
+        <h2 class="section-title">{{ t('home_refs') }}</h2>
+        <p class="section-intro">{{ t('home_refs_desc') }}</p>
+
+        <div class="brand-strip">
+            {% for reference in referenceList %}
+                <div class="brand-strip__item">
+                    <img src="{{ reference["reference_image"] }}" alt="{{ reference["reference_name"] }}" loading="lazy">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================================================= KAYAN GRUP MARKALARI -->
+{% set groupBrands = [
+    { img: site['logo'], name: 'Cappafe', css: 'marquee__brand--cappafe' },
+    { img: 'assets_new/images/group-brands/campoo.png', name: 'Campoo' },
+    { img: 'assets_new/images/group-brands/eurocap-auto-accessories.png', name: 'Eurocap Auto Accessories' }
+] %}
+<div class="marquee" aria-label="{{ t('footer_group') }}">
+    {# Kesintisiz döngü: liste 4 kez basılır, animasyon 1 set kaydırır.
+       Geniş ekranlarda da boşluk oluşmaması için 4 kopya. #}
+    <div class="marquee__track">
+        {% for i in 1..4 %}
+            {% for brand in groupBrands %}
+                <img{% if brand.css is defined %} class="{{ brand.css }}"{% endif %} src="{{ brand.img }}?v={{ site['asset_version'] }}" alt="{{ brand.name }}"{{ i > 1 ? ' aria-hidden="true"' : '' }}>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ============================================================ DUYURULAR -->
+{% if blogList %}
+<section class="section-pad section-light">
+    <div class="container">
+
+        <div class="news-head">
+            <h2 class="section-title">{{ t('home_news') }}</h2>
+            {% if blogList|length > 4 %}
+            <div class="news-nav">
+                <button type="button" id="newsPrev" aria-label="{{ t('news_prev') }}">&#8249;</button>
+                <button type="button" id="newsNext" aria-label="{{ t('news_next') }}">&#8250;</button>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row g-4" id="newsGrid">
+            {% for blog in blogList %}
+            <div class="col-lg-3 col-md-6 news-item{{ loop.index > 4 ? ' d-none' : '' }}">
+                <a class="news-card" href="{{ lang_url('yazilar/' ~ blog["page_get"]) }}">
+                    <div class="news-card__body">
+                        <span class="news-card__cat">{{ site['site_name'] }}</span>
+                        <span class="news-card__title">{{ blog["page_name"] }}</span>
+                        {% if blog["page_description"] %}
+                            <p class="news-card__excerpt">{{ blog["page_description"]|slice(0, 120) }}{{ blog["page_description"]|length > 120 ? '…' : '' }}</p>
+                        {% endif %}
+                        <span class="btn-arrow">{{ t('cta_find_out_more') }}</span>
+                    </div>
+                    <div class="news-card__meta">
+                        <span>{{ blog["page_date"]|date("d.m.Y") }}</span>
+                        <span>{{ t('nav_news') }}</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="news-all">
+            <a class="btn-brand-outline" href="{{ lang_url('yazilar') }}">{{ t('cta_all_news') }}</a>
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================================== BÜLTEN -->
+<section class="newsletter">
+    <div class="container">
+        <div class="newsletter__inner">
+            <div>
+                <h2>{{ t('newsletter_title') }}</h2>
+                <p>{{ t('newsletter_desc') }}</p>
+            </div>
+            <div id="bulten">
+                <form action="{{ lang_url('abone') }}" method="post">
+                    <input type="hidden" name="donus" value="{{ current_url }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="email" name="abone" placeholder="{{ t('newsletter_placeholder') }}" required>
+                    <button type="submit" class="btn-brand-red">{{ t('newsletter_button') }}</button>
+                </form>
+
+                {% if app_query.abone == 'ok' %}
+                    <p class="newsletter__msg newsletter__msg--ok">{{ t('newsletter_ok') }}</p>
+                {% elseif app_query.abone == 'kayitli' %}
+                    <p class="newsletter__msg newsletter__msg--ok">{{ t('newsletter_exists') }}</p>
+                {% elseif app_query.abone == 'mail' %}
+                    <p class="newsletter__msg newsletter__msg--err">{{ t('form_err_email') }}</p>
+                {% elseif app_query.abone in ['bos','hata'] %}
+                    <p class="newsletter__msg newsletter__msg--err">{{ t('form_err_save') }}</p>
+                {% endif %}
+
+                <p class="newsletter__note">{{ t('newsletter_note') }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================= SÜREÇ -->
+<section class="process">
+    <div class="container">
+        <h2 class="section-title">{{ t('process_title') }}</h2>
+        <p class="section-intro">{{ t('process_desc') }}</p>
+
+        <div class="process__rail" id="processRail">
+
+            {# Yatay adım şeridi — kendi kendine döngüyle ilerler (scroll'dan bağımsız).
+               Numaralı, dolu renkli ikonlar + her adımın kısa başlığı hep görünür;
+               aktif ikonun etrafındaki halka bir sonraki aşamaya kalan süreyi gösterir. #}
+            <div class="process__stepper">
+                <div class="process__line" aria-hidden="true"><span class="process__line-fill" id="processLineFill"></span></div>
+                <ol class="process__steps">
+                    <li class="process__step" data-step="1">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.4"/><circle cx="16" cy="7" r="1.8"/><circle cx="12" cy="14" r="2.6"/><circle cx="18" cy="16" r="2"/><circle cx="6" cy="17" r="1.6"/></svg>
+                            </span>
+                            <span class="process__badge">1</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_1_title') }}</span>
+                    </li>
+                    <li class="process__step" data-step="2">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.2 2.4-.6 3.4-.6 5.2 0 1.2 1 2 1 2s1.4-1 1.4-2.6c1.6 1.6 2.2 3.6 2.2 5.4a4 4 0 1 1-8 0c0-1.6.6-2.6 1.6-3.8.8-1 1.4-2.2 1.4-3.6.4-.6.6-1.6-.6-2.6Z"/></svg>
+                            </span>
+                            <span class="process__badge">2</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_2_title') }}</span>
+                    </li>
+                    <li class="process__step" data-step="3">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/><path d="M2 12h2M20 12h2"/></svg>
+                            </span>
+                            <span class="process__badge">3</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_3_title') }}</span>
+                    </li>
+                    <li class="process__step" data-step="4">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><path d="M20 6 8.5 14M8.5 10 20 18"/></svg>
+                            </span>
+                            <span class="process__badge">4</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_4_title') }}</span>
+                    </li>
+                    <li class="process__step" data-step="5">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.4-4.4M8 10.5l1.6 1.6L13.5 8"/></svg>
+                            </span>
+                            <span class="process__badge">5</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_5_title') }}</span>
+                    </li>
+                    <li class="process__step" data-step="6">
+                        <span class="process__icon">
+                            <svg class="process__ring" viewBox="0 0 60 60" aria-hidden="true">
+                                <circle class="process__ring-track" cx="30" cy="30" r="26"/>
+                                <circle class="process__ring-fill" cx="30" cy="30" r="26"/>
+                            </svg>
+                            <span class="process__icon-inner">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8 12 3l9 5-9 5-9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
+                            </span>
+                            <span class="process__badge">6</span>
+                        </span>
+                        <span class="process__step-title">{{ t('process_6_title') }}</span>
+                    </li>
+                </ol>
+            </div>
+
+            {# Hammadde → ürün dönüşüm sahnesi — her aşama kendi çizimiyle temsil edilir
+               (granül taneleri, ekstrüzyon, silindirler, kesim, kalite kontrol, paket),
+               aktif aşamaya göre çapraz solarak geçiş yapar. #}
+            <div class="process__scene-wrap">
+                <div class="process__material-glow"></div>
+                <svg class="process__scene" id="processScene" viewBox="0 0 200 120" fill="none"
+                     stroke="var(--c-navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true" data-stage="1">
+                    <g class="process__scene-stage" data-scene="1">
+                        <circle cx="76" cy="52" r="7" fill="#b7ab8d" stroke="none"/>
+                        <circle cx="98" cy="42" r="6" fill="#c9bd9d" stroke="none"/>
+                        <circle cx="120" cy="55" r="7" fill="#b7ab8d" stroke="none"/>
+                        <circle cx="88" cy="72" r="6" fill="#c9bd9d" stroke="none"/>
+                        <circle cx="112" cy="74" r="6.5" fill="#b7ab8d" stroke="none"/>
+                        <circle cx="64" cy="66" r="5" fill="#c9bd9d" stroke="none"/>
+                        <circle cx="132" cy="70" r="5.5" fill="#b7ab8d" stroke="none"/>
+                    </g>
+                    <g class="process__scene-stage" data-scene="2">
+                        <path d="M50 60c0-15 22-24 50-24s50 9 50 24-22 22-50 22-50-7-50-22Z" fill="#c2542f" stroke="none"/>
+                        <path d="M78 24c2-5-2-7 0-12M100 20c2-5-2-7 0-12M122 24c2-5-2-7 0-12" stroke="#eaa761" stroke-width="3"/>
+                    </g>
+                    <g class="process__scene-stage" data-scene="3">
+                        <circle cx="46" cy="40" r="13" stroke-width="5"/>
+                        <circle cx="46" cy="80" r="13" stroke-width="5"/>
+                        <rect x="54" y="48" width="100" height="24" rx="3" fill="var(--c-navy)" stroke="none"/>
+                    </g>
+                    <g class="process__scene-stage" data-scene="4">
+                        <rect x="42" y="45" width="116" height="30" rx="3" fill="var(--c-navy)" stroke="none"/>
+                        <line x1="100" y1="36" x2="100" y2="84" stroke="var(--c-red)" stroke-width="3" stroke-dasharray="5 5"/>
+                        <path d="M92 30h16l-8 12z" fill="var(--c-red)" stroke="none"/>
+                    </g>
+                    <g class="process__scene-stage" data-scene="5">
+                        <rect x="40" y="48" width="110" height="26" rx="3" fill="var(--c-navy)" stroke="none"/>
+                        <circle cx="132" cy="42" r="15" stroke="var(--c-red)" stroke-width="3"/>
+                        <line x1="143" y1="53" x2="154" y2="64" stroke="var(--c-red)" stroke-width="3"/>
+                        <path d="M124 42l5 5 10-10" stroke="var(--c-red)" stroke-width="3"/>
+                    </g>
+                    <g class="process__scene-stage" data-scene="6">
+                        <rect x="46" y="58" width="100" height="20" rx="3" fill="#1c2666" stroke="none"/>
+                        <rect x="52" y="50" width="100" height="20" rx="3" fill="var(--c-navy)" stroke="none"/>
+                        <rect x="58" y="42" width="100" height="20" rx="3" fill="var(--c-red)" stroke="none"/>
+                        <circle cx="150" cy="30" r="13" fill="var(--c-white)" stroke="var(--c-red)" stroke-width="3"/>
+                        <path d="M144 30l4 4 8-8" stroke="var(--c-red)" stroke-width="3"/>
+                    </g>
+                </svg>
+            </div>
+            <p class="process__material-label" id="processMaterialLabel"
+               data-label-1="{{ t('process_material_1') }}" data-label-2="{{ t('process_material_2') }}"
+               data-label-3="{{ t('process_material_3') }}" data-label-4="{{ t('process_material_4') }}"
+               data-label-5="{{ t('process_material_5') }}" data-label-6="{{ t('process_material_6') }}">{{ t('process_material_1') }}</p>
+
+            {# Aktif aşamanın açıklaması — sahnenin altında, geçişte çapraz solar #}
+            <div class="process__detail">
+                {% for i in 1..6 %}
+                <div class="process__detail-item{{ i == 1 ? ' is-active' : '' }}" data-detail="{{ i }}">
+                    <span class="process__num">0{{ i }}</span>
+                    <h3>{{ t('process_' ~ i ~ '_title') }}</h3>
+                    <p>{{ t('process_' ~ i ~ '_desc') }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================= SSS -->
+<section class="section-pad section-light faq-section">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4 col-md-12">
+                <div class="faq__sidebar">
+                    <span class="why__label">{{ t('faq_title') }}</span>
+                    <h2 class="why__title">{{ t('faq_desc') }}</h2>
+
+                    {% if whatsapp_number %}
+                    <div class="faq__cta-box">
+                        <h4>{{ t('faq_cta_title') }}</h4>
+                        <p>{{ t('faq_cta_desc') }}</p>
+                        <a href="{{ whatsapp_link }}" target="_blank" rel="noopener" class="btn-brand-red faq__cta-btn">
+                            <i class="ti-comments"></i> {{ t('faq_cta_btn') }}
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-12">
+                <div class="faq__list faq__list--split" id="faqList">
+                    {% for i in 1..5 %}
+                    <div class="faq__item">
+                        <button class="faq__q" type="button" aria-expanded="false">{{ t('faq_' ~ i ~ '_q') }}</button>
+                        <div class="faq__a">
+                            <div class="faq__a-inner">{{ t('faq_' ~ i ~ '_a') }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====================================================== UZMAN ŞERİDİ -->
+<section class="expert">
+    <div class="container">
+        <h2>{{ t('expert_before') }}&nbsp;<em>{{ t('expert_accent') }}</em>&nbsp;{{ t('expert_after') }}</h2>
+        <p>{{ t('expert_desc') }}</p>
+        <button class="btn-brand-red" type="button" data-quote-open>{{ t('expert_cta') }}</button>
+    </div>
+</section>
+
+{% include 'footer.twig' %}

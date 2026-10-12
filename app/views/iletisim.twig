@@ -1,0 +1,80 @@
+{% include 'header.twig' %}
+
+<section class="contact">
+
+    {# Harita arka planda, form kartı üstünde #}
+    <div class="contact__map">
+        {% if settings["site_maps"] %}
+            {{ settings["site_maps"]|raw }}
+        {% else %}
+            <iframe
+                title="{{ settings["site_name"] }}"
+                src="https://www.google.com/maps?q={{ settings["site_address"]|url_encode }}&output=embed"
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <div class="contact__card">
+
+            <span class="contact__kicker">{{ t('contact_kicker') }}</span>
+            <h1 class="contact__title">{{ t('contact_title') }}</h1>
+            <p class="contact__intro">{{ t('contact_intro') }}</p>
+
+            <ul class="contact__info">
+                {% if settings["site_address"] %}
+                <li>
+                    <i class="ti-location-pin"></i>
+                    <span>{{ settings["site_address"] }}</span>
+                </li>
+                {% endif %}
+                {% if settings["site_telephone"] %}
+                <li>
+                    <i class="ti-mobile"></i>
+                    <a href="tel:{{ settings["site_telephone"]|replace({' ': '', '(': '', ')': '', '-': ''}) }}">{{ settings["site_telephone"] }}</a>
+                </li>
+                {% endif %}
+                {% if settings["site_mail"] %}
+                <li>
+                    <i class="ti-email"></i>
+                    <a href="mailto:{{ settings["site_mail"] }}">{{ settings["site_mail"] }}</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            {% if successText %}
+                <div class="form-note form-note--ok">{{ successText }}</div>
+            {% endif %}
+            {% if errorText %}
+                <div class="form-note form-note--err">{{ errorText }}</div>
+            {% endif %}
+
+            <form class="contact__form" method="post" action="{{ lang_url('iletisim') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="contact__row">
+                    <input type="text"  name="name"      placeholder="{{ t('form_name') }}"    aria-label="{{ t('form_name') }}"    autocomplete="name"  value="{{ form_name }}"      required>
+                    <input type="email" name="email"     placeholder="{{ t('form_email') }}"   aria-label="{{ t('form_email') }}"   autocomplete="email" value="{{ form_email }}"     required>
+                </div>
+                <div class="contact__row">
+                    <input type="tel"   name="telephone" placeholder="{{ t('form_phone') }}"   aria-label="{{ t('form_phone') }}"   autocomplete="tel"   value="{{ form_telephone }}" required>
+                    <input type="text"  name="subject"   placeholder="{{ t('form_subject') }}" aria-label="{{ t('form_subject') }}" value="{{ form_subject }}"   required>
+                </div>
+                <textarea name="message" rows="5" placeholder="{{ t('form_message') }}" aria-label="{{ t('form_message') }}" required>{{ form_message }}</textarea>
+
+                {% if captcha %}
+                    <div class="g-recaptcha" data-sitekey="{{ captchaKey }}"></div>
+                {% endif %}
+
+                <button class="btn-brand-red" type="submit">{{ t('form_send') }}</button>
+            </form>
+
+        </div>
+    </div>
+
+</section>
+
+{% if captcha %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endif %}
+
+{% include 'footer.twig' %}

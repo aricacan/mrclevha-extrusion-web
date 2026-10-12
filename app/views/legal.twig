@@ -1,0 +1,22 @@
+{% include 'header.twig' %}
+
+<section class="page-head">
+  <div class="container">
+    <nav class="page-head__crumbs" aria-label="breadcrumb">
+      <a href="{{ lang_url() }}">{{ t('nav_home') }}</a><span>/</span><span>{{ legalPage['heading'] }}</span>
+    </nav>
+    <h1 class="page-head__title">{{ legalPage['heading'] }}</h1>
+    <p class="page-head__intro">{{ legalPage['intro'] }}</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container legal-content">
+    {% for section in legalPage['sections'] %}
+      <h2>{{ section['title'] }}</h2>
+      <p>{{ section['body'] }}</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% include 'footer.twig' %}

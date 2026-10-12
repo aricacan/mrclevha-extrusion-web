@@ -1,0 +1,61 @@
+{% include 'header.twig' %}
+
+<section class="page-head">
+    <div class="container">
+        <nav class="page-head__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('nav_news') }}</span>
+        </nav>
+        <h1 class="page-head__title">{{ t('nav_news') }}</h1>
+        <p class="page-head__intro">{{ t('news_index_intro') }}</p>
+    </div>
+</section>
+
+<section class="news-page section-pad">
+    <div class="container">
+
+        {% if newsList %}
+
+            {# En son duyuru öne çıkarılır #}
+            {% set featured = newsList|first %}
+            <a class="news-lead slide-in" href="{{ lang_url('yazilar/' ~ featured["page_get"]) }}">
+                <div class="news-lead__side">
+                    <span class="news-lead__badge">{{ t('news_latest') }}</span>
+                    <time class="news-lead__date" datetime="{{ featured["page_date"]|date('Y-m-d') }}">
+                        <span class="news-lead__day">{{ featured["page_date"]|date('d') }}</span>
+                        <span class="news-lead__month">{{ featured["page_date"]|date('m.Y') }}</span>
+                    </time>
+                </div>
+                <div class="news-lead__body">
+                    <h2 class="news-lead__title">{{ featured["page_name"] }}</h2>
+                    {% if featured["page_description"] %}
+                        <p>{{ featured["page_description"] }}</p>
+                    {% endif %}
+                    <span class="btn-arrow">{{ t('cta_find_out_more') }}</span>
+                </div>
+            </a>
+
+            {% if newsList|length > 1 %}
+            <div class="news-grid">
+                {% for row in newsList|slice(1) %}
+                <a class="news-tile slide-in" href="{{ lang_url('yazilar/' ~ row["page_get"]) }}">
+                    <span class="news-tile__date">{{ row["page_date"]|date('d.m.Y') }}</span>
+                    <span class="news-tile__title">{{ row["page_name"] }}</span>
+                    {% if row["page_description"] %}
+                        <p class="news-tile__desc">{{ row["page_description"] }}</p>
+                    {% endif %}
+                    <span class="news-tile__go">{{ t('cta_find_out_more') }} &rarr;</span>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        {% else %}
+            <p class="news-empty">{{ t('news_empty') }}</p>
+        {% endif %}
+
+    </div>
+</section>
+
+{% include 'footer.twig' %}

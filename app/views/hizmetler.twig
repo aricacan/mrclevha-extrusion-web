@@ -1,0 +1,132 @@
+{% include 'header.twig' %}
+
+{% if page %}
+{# ======================================================== SEKTÖR DETAY #}
+
+<!-- Tam genişlik görsel başlık -->
+<section class="sec-hero{{ page["page_image"] ? '' : ' sec-hero--empty' }}">
+    {% if page["page_get"] == 'otomotiv-sektoru' %}
+        <video class="sec-hero__bg" src="assets/cloud/videos/automotive-parts.mp4" autoplay loop muted playsinline poster="{{ page["page_image"] }}?v={{ site['asset_version'] }}"></video>
+    {% elseif page["page_image"] %}
+        <img class="sec-hero__bg" src="{{ page["page_image"] }}?v={{ site['asset_version'] }}" alt="">
+    {% endif %}
+    <div class="container">
+        <nav class="sec-hero__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <a href="{{ lang_url('hizmetler') }}">{{ t('nav_sectors') }}</a>
+        </nav>
+        <span class="sec-hero__kicker">{{ t('sectors_kicker') }}</span>
+        <h1 class="sec-hero__title">{{ page["page_name"] }}</h1>
+    </div>
+</section>
+
+<!-- Yapışkan sektör geçiş şeridi -->
+<div class="sec-switch" id="secSwitch">
+    <div class="container">
+        <div class="sec-switch__track">
+            {% for row in sectorList %}
+                <a href="{{ lang_url('hizmetler/' ~ row["page_get"]) }}"
+                   class="sec-switch__pill{{ row["page_get"] == page["page_get"] ? ' is-active' : '' }}">
+                    {{ row["page_name"] }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- İçerik: asimetrik dergi düzeni -->
+<section class="sec-body">
+    <div class="container">
+        <div class="sec-body__grid">
+
+            <div class="sec-body__lead slide-in slide-in--left">
+                {% if page["page_description"] %}
+                    <p class="sec-lead">{{ page["page_description"] }}</p>
+                {% endif %}
+                <a class="btn-brand-red" href="{{ lang_url('iletisim') }}">{{ t('cta_quote') }}</a>
+            </div>
+
+            <div class="sec-body__text slide-in slide-in--right">
+                {{ page["page_content"]|raw }}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Ortak güven şeridi (doğrulanmış bilgiler) -->
+<section class="sec-trust">
+    <div class="container">
+        <div class="sec-trust__grid">
+            <div class="sec-trust__item slide-in"><span>{{ t('trust_1_num') }}</span><p>{{ t('trust_1_desc') }}</p></div>
+            <div class="sec-trust__item slide-in"><span>{{ t('trust_2_num') }}</span><p>{{ t('trust_2_desc') }}</p></div>
+            <div class="sec-trust__item slide-in"><span>{{ t('trust_3_num') }}</span><p>{{ t('trust_3_desc') }}</p></div>
+            <div class="sec-trust__item slide-in"><span>{{ t('trust_4_num') }}</span><p>{{ t('trust_4_desc') }}</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Diğer sektörler -->
+{% if otherSectors %}
+<section class="sec-more">
+    <div class="container">
+        <h2 class="sec-more__title">{{ t('sectors_other') }}</h2>
+        <div class="sec-more__row">
+            {% for row in otherSectors %}
+                <a class="sec-more__card slide-in" href="{{ lang_url('hizmetler/' ~ row["page_get"]) }}">
+                    <span class="sec-more__num">{{ '%02d'|format(loop.index) }}</span>
+                    <span class="sec-more__name">{{ row["page_name"] }}</span>
+                    <span class="sec-more__go">&rarr;</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% else %}
+{# ======================================================= SEKTÖR LİSTESİ #}
+
+<section class="page-head">
+    <div class="container">
+        <nav class="page-head__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('nav_sectors') }}</span>
+        </nav>
+        <h1 class="page-head__title">{{ t('nav_sectors') }}</h1>
+        <p class="page-head__intro">{{ t('sectors_index_intro') }}</p>
+    </div>
+</section>
+
+<!-- Dönüşümlü satırlar: görsel solda / sağda -->
+<section class="sec-list">
+    <div class="container">
+        {% for row in sectorList %}
+        <article class="sec-row{{ loop.index is odd ? '' : ' sec-row--flip' }} slide-in">
+
+            <div class="sec-row__media{{ row["page_image"] ? '' : ' sec-row__media--empty' }}">
+                {% if row["page_image"] %}
+                    <img src="{{ row["page_image"] }}" alt="{{ row["page_name"] }}" loading="lazy">
+                {% endif %}
+                <span class="sec-row__num">{{ '%02d'|format(loop.index) }}</span>
+            </div>
+
+            <div class="sec-row__body">
+                <span class="sec-row__kicker">{{ t('sectors_kicker') }}</span>
+                <h2 class="sec-row__title">{{ row["page_name"] }}</h2>
+                {% if row["page_description"] %}
+                    <p>{{ row["page_description"] }}</p>
+                {% endif %}
+                <a class="btn-arrow" href="{{ lang_url('hizmetler/' ~ row["page_get"]) }}">{{ t('cta_find_out_more') }}</a>
+            </div>
+
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+{% endif %}
+
+{% include 'footer.twig' %}

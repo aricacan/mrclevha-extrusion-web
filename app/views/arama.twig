@@ -1,0 +1,67 @@
+{% include 'header.twig' %}
+
+<section class="section-pad">
+    <div class="container">
+
+        <h1 class="section-title" style="text-align:center;">{{ t('search_title') }}</h1>
+
+        <form class="search-page__form" action="{{ lang_url('arama') }}" method="get" role="search">
+            <button type="submit" aria-label="{{ t('search_button') }}"><i class="ti-search"></i></button>
+            <input type="search" name="q" value="{{ query }}" placeholder="{{ t('search_placeholder') }}">
+        </form>
+
+        {% if query|length >= 2 %}
+
+            {% set total = searchPages|length + searchFiles|length %}
+            <p class="search-page__count">{{ t('search_results') }}: <strong>{{ total }}</strong></p>
+
+            {% if total > 0 %}
+
+                {% if searchPages %}
+                <ul class="search-list">
+                    {% for row in searchPages %}
+                        {% if row["page_type"] == 1 %}
+                            {% set base = 'hizmetler/' %}{% set kind = t('nav_sectors') %}
+                        {% elseif row["page_type"] == 3 %}
+                            {% set base = 'yazilar/' %}{% set kind = t('nav_news') %}
+                        {% else %}
+                            {% set base = 'sayfa/' %}{% set kind = t('nav_corporate') %}
+                        {% endif %}
+                        <li>
+                            <a href="{{ lang_url(base ~ row["page_get"]) }}">
+                                <span class="search-list__kind">{{ kind }}</span>
+                                <span class="search-list__title">{{ row["page_name"] }}</span>
+                                {% if row["page_description"] %}
+                                    <span class="search-list__desc">{{ row["page_description"] }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% if searchFiles %}
+                <ul class="search-list">
+                    {% for file in searchFiles %}
+                        <li>
+                            <a href="{{ file["file_url"] }}" target="_blank" rel="noopener">
+                                <span class="search-list__kind">{{ t('nav_catalogs') }}</span>
+                                <span class="search-list__title">{{ file["file_name"] }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+            {% else %}
+                <p class="search-page__empty">{{ t('search_none') }}</p>
+            {% endif %}
+
+        {% elseif query|length > 0 %}
+            <p class="search-page__empty">{{ t('search_short') }}</p>
+        {% endif %}
+
+    </div>
+</section>
+
+{% include 'footer.twig' %}

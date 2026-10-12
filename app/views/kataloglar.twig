@@ -1,0 +1,37 @@
+{% include 'header.twig' %}
+
+<section class="page-head">
+    <div class="container">
+        <nav class="page-head__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('nav_catalogs') }}</span>
+        </nav>
+        <h1 class="page-head__title">{{ t('nav_catalogs') }}</h1>
+        <p class="page-head__intro">{{ t('catalog_intro') }}</p>
+    </div>
+</section>
+
+<section class="section-pad section-light">
+    <div class="container">
+        {% if fileList %}
+            <div class="row g-4">
+                {% for file in fileList %}
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="news-tile" style="align-items:center; text-align:center;">
+                        <img src="assets/images/pdf.jpg" alt="" style="width:56px; height:auto; margin:0 auto 1rem;">
+                        <span class="news-tile__title">{{ file["file_name"] }}</span>
+                        <a class="btn-brand-outline" style="margin-top:1rem;" href="{{ file["file_url"] }}" target="_blank" rel="noopener">
+                            <i class="ti-download"></i> {{ t('cta_download') }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="news-empty">{{ t('catalog_empty') }}</p>
+        {% endif %}
+    </div>
+</section>
+
+{% include 'footer.twig' %}

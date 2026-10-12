@@ -1,0 +1,38 @@
+{% include 'header.twig' %}
+
+<section class="page-head">
+    <div class="container">
+        <nav class="page-head__crumbs" aria-label="breadcrumb">
+            <a href="{{ lang_url() }}">{{ t('nav_home') }}</a>
+            <span>/</span>
+            <span>{{ t('nav_production') }}</span>
+        </nav>
+        <h1 class="page-head__title">{{ t('nav_production') }}</h1>
+        <p class="page-head__intro">{{ t('gallery_intro') }}</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        {% if fileList %}
+            <div class="row g-4">
+                {% for file in fileList %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-tile" style="padding:0; overflow:hidden;">
+                        {% if file["file_type"] == 3 %}
+                            <video src="{{ file["file_url"] }}" autoplay loop muted playsinline style="width:100%; aspect-ratio:4/3; object-fit:cover;"></video>
+                        {% else %}
+                            <img src="{{ file["file_url"] }}" alt="{{ file["file_name"] }}" style="width:100%; aspect-ratio:4/3; object-fit:cover;" loading="lazy">
+                        {% endif %}
+                        <span class="news-tile__title" style="padding:1.25rem 1.25rem 1.5rem; display:block;">{{ file["file_name"] }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="news-empty">{{ t('gallery_empty') }}</p>
+        {% endif %}
+    </div>
+</section>
+
+{% include 'footer.twig' %}
